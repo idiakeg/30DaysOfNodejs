@@ -55,26 +55,46 @@ const crypto = require("crypto");
 
 const algorithm = "aes-256-cbc";
 const key = crypto.randomBytes(32);
-const iv = crypto.randomBytes(16);
+const iv = crypto.randomBytes(16); //This returns a buffer
 const bufferedKey = Buffer.from(key);
 
+// ENCRYPTION FUNCTION
 function encrypt(text) {
 	// create the cipheriv method
 	const cipher = crypto.createCipheriv(algorithm, bufferedKey, iv);
 	// update the cipher with the text you want to encrypt
 	const encrypted = cipher.update(text);
 	// obtain the buffer thet contains the value of the cipher object. it is similar to digest in hashing
-	const final = cipher.final();
+
+	// the final and encrypted opbtained from the cipher final and update method call respectively are both biffers, merge both buffers together with the concat method
+	const final = Buffer.concat([encrypted, cipher.final()]);
+
 	return {
-		encrypted,
+		iv: iv.toString("hex"),
+		finalText: final.toString("hex"),
 		final,
 	};
 }
 
+// DECRYPTION FUNCTION
+function decrypt(text) {
+	// the text here is going to be from the return value of the encryption function call, seeing as that is an object with the iv and finalText concerted to hex, we would need to obtain their buffers
+	const iv = Buffer.from(text.iv, "hex");
+	const encryptedText = Buffer.from(text.finalText, "hex");
+
+	// create the Decipheriv method
+	const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+	// update the decipher method with the text to be decrypted
+	const decrypted = decipher.update(encryptedText);
+	// obtain the final result by concating the decryped variable and the result from the final() method
+	const finalDecrypted = Buffer.concat([decrypted, decipher.final()]);
+
+	return finalDecrypted.toString();
+}
+
 // sideNote: you can only run the update and final method on the created cipher method.
 
-const { encrypted, final } = encrypt("God is good");
-// the final and encrypted opbtained from the cipher final and update method call respectively are both biffers, merge both buffers together with the concat method
-let moo = Buffer.concat([encrypted, final]).toString("hex");
+const output = encrypt("God is good");
 
-console.log(moo);
+const woo = decrypt(output);
+console.log(woo);
