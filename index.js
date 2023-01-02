@@ -75,6 +75,6 @@ function encrypt(text) {
 
 const { encrypted, final } = encrypt("God is good");
 // the final and encrypted opbtained from the cipher final and update method call respectively are both biffers, merge both buffers together with the concat method
-let moo = Buffer.concat([encrypted, final]);
+let moo = Buffer.concat([encrypted, final]).toString("hex");
 
 console.log(moo);
