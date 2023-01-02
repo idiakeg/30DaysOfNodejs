@@ -69,23 +69,15 @@ function encrypt(text) {
 	// the final and encrypted opbtained from the cipher final and update method call respectively are both biffers, merge both buffers together with the concat method
 	const final = Buffer.concat([encrypted, cipher.final()]);
 
-	return {
-		iv: iv.toString("hex"),
-		finalText: final.toString("hex"),
-		final,
-	};
+	return final;
 }
 
 // DECRYPTION FUNCTION
 function decrypt(text) {
-	// the text here is going to be from the return value of the encryption function call, seeing as that is an object with the iv and finalText concerted to hex, we would need to obtain their buffers
-	const iv = Buffer.from(text.iv, "hex");
-	const encryptedText = Buffer.from(text.finalText, "hex");
-
 	// create the Decipheriv method
 	const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
 	// update the decipher method with the text to be decrypted
-	const decrypted = decipher.update(encryptedText);
+	const decrypted = decipher.update(text);
 	// obtain the final result by concating the decryped variable and the result from the final() method
 	const finalDecrypted = Buffer.concat([decrypted, decipher.final()]);
 
@@ -94,7 +86,7 @@ function decrypt(text) {
 
 // sideNote: you can only run the update and final method on the created cipher method.
 
-const output = encrypt("God is good");
+const output = encrypt("God is awesome");
 
 const woo = decrypt(output);
 console.log(woo);
