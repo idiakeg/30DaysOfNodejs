@@ -1,22 +1,22 @@
 const express = require("express");
-
 const app = express();
-
-// use the express middleware(express.static) that serves static pages, to use it, register the middleware using app.use()
-
-// app.use(express.static("public"));
-
-app.get("/", (req, res) => {
-	res.json({
-		status: "successfull",
-		location: "Nigeria",
-	});
+const products = require("./data");
+const newProduct = products.map((product) => {
+	const { name, year } = product;
+	return {
+		name,
+		year,
+	};
 });
 
-// this block of cocde runs if the client requests a page that we donot have.
+app.get("/", (req, res) => {
+	res
+		.status(200)
+		.send(`<h1>Welcome</h1><a href="/api/products">Go to products</a>`);
+});
 
-app.all("*", (req, res) => {
-	res.status(404).send("Resource not found");
+app.get("/api/products", (req, res) => {
+	res.status(200).json(newProduct);
 });
 
 app.listen(5500, () => console.log("server is running on port 5500"));
