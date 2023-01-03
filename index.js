@@ -4,7 +4,14 @@ const app = express();
 
 // use the express middleware(express.static) that serves static pages, to use it, register the middleware using app.use()
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
+
+app.get("/", (req, res) => {
+	res.json({
+		status: "successfull",
+		location: "Nigeria",
+	});
+});
 
 // this block of cocde runs if the client requests a page that we donot have.
 
