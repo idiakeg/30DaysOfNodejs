@@ -1,15 +1,7 @@
 const express = require("express");
 const app = express();
+const port = 9000;
 const products = require("./data");
-
-// the newProducts is an abstraction of the actual products, it displays only the name and year of the products. If the user wants to see the review of a specific product, the would have to specify which product they want and they would get access to the name, year and review of said product.
-const newProduct = products.map((product) => {
-	const { name, year } = product;
-	return {
-		name,
-		year,
-	};
-});
 
 app.get("/", (req, res) => {
 	res
@@ -17,8 +9,25 @@ app.get("/", (req, res) => {
 		.send(`<h1>Welcome</h1><a href="/api/products">Go to products</a>`);
 });
 
+// get all products
 app.get("/api/products", (req, res) => {
+	const newProduct = products.map((product) => {
+		const { name, year } = product;
+		return {
+			name,
+			year,
+		};
+	});
 	res.status(200).json(newProduct);
 });
 
-app.listen(5500, () => console.log("server is running on port 5500"));
+// get soecific product by id
+app.get("/api/products/:id", (req, res) => {
+	const singleProduct = products.find(
+		(product) => product.id === Number(req.params.id)
+	);
+
+	res.json(singleProduct);
+});
+
+app.listen(5000, () => console.log("server is running on port 5000"));
