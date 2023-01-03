@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const products = require("./data");
+
+// the newProducts is an abstraction of the actual products, it displays only the name and year of the products. If the user wants to see the review of a specific product, the would have to specify which product they want and they would get access to the name, year and review of said product.
 const newProduct = products.map((product) => {
 	const { name, year } = product;
 	return {
