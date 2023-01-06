@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const logger = require("./logger");
+const authorize = require("./authorize");
 
-// To use the middleware, register it using the app.use() method. This method adds the middleware function to all the routes(i think it does so for all the get routes, will see if it does the same for other routes). The postion / order of writing, calling the app.use() matters
-app.use("/about", logger);
+app.use([authorize, logger]);
 
 app.get("/", (req, res) => {
 	res.send(
