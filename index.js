@@ -27,12 +27,11 @@ app.post("/login", (req, res) => {
 app.get("/login/:id", (req, res) => {
 	const { id } = req.params;
 	// make a copy of the schema
-	let newSchemas = [...schema];
-	id &&
-		// find the requested id
-		(newSchemas = schema.find((item) => item.id === Number(id)));
-
-	res.send(newSchemas);
+	let newSchema = [...schema];
+	let filteredSchemas = newSchema.find((item) => item.id === Number(id));
+	// if the clients passes in an id, and the filtered schema return undefined, tell the client that we donot have data with specified id
+	id && !filteredSchemas && res.send(`User with id: ${id} doesnot exist`);
+	res.send(filteredSchemas);
 });
 
 app.listen(5500, () => console.log("server is running on port 5500"));
