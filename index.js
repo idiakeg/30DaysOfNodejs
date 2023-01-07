@@ -20,7 +20,7 @@ app.get("/about", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-	schema.push(req.body);
+	schema = [...schema, req.body];
 	res.send(schema);
 });
 
