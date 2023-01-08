@@ -74,4 +74,25 @@ app.put("/login/:id", (req, res) => {
 	res.json(`User with the id: ${id} has been updated`);
 });
 
+// delete
+app.delete("/login/:id", (req, res) => {
+	// obtain the id the user the client wants to delete
+	const { id } = req.params;
+	// if the id provided by the client does not exist, inform the client
+	const userToBeDeleted = schema.find((item) => item.id === Number(id));
+	if (!userToBeDeleted) {
+		return res.json({
+			status: "unsuccessful",
+			message: `User with id: ${id} doesnot exist`,
+		});
+	}
+	// if the id provided exist, filter the schema
+	schema = schema.filter((item) => item.id !== Number(id));
+	// alert the client of a successful action
+	res.json({
+		status: "success",
+		message: `User with id: ${id} was successfully deleted`,
+	});
+});
+
 app.listen(5500, () => console.log("server is running on port 5500"));
