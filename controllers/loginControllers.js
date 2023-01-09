@@ -13,31 +13,21 @@ const getUser = (req, res) => {
 	const newSchema = [...schema];
 	// filter the newSchema based on the received id
 	let filteredSchema = newSchema.find((item) => item.id === Number(id));
-	// if the user provides an id that does not exist in our schema, inform the user
+	// if the client provides an id that does not exist in our schema, inform the user
 	if (id && !filteredSchema) {
-		try {
-			return res.json({
-				status: "error",
-				message: `User with id: ${id} doesnot exist`,
-			});
-		} catch (error) {
-			console.log("Error is from app.get:", error);
-		}
+		return res.json({
+			status: "error",
+			message: `User with id: ${id} doesnot exist`,
+		});
 	}
 
-	// if the user doesnot provide an id, return the entire newSchema
+	// if the client doesnot provide an id, return the entire newSchema
 	if (!id) {
-		try {
-			return res.json(newSchema);
-		} catch (error) {
-			console.log("error is from app.get when the user doesnot provide an id");
-		}
+		return res.json(newSchema);
 	}
-	try {
-		res.json(filteredSchema);
-	} catch (error) {
-		console.log("error is from app.get");
-	}
+
+	// if the client provides an id and said is exists in our schema, return the filteredSchema to the client
+	res.json(filteredSchema);
 };
 
 const updateUser = (req, res) => {
