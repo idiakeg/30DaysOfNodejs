@@ -25,5 +25,3 @@ module.exports = {
 	updateTask,
 	deleteTask,
 };
-
-console.log(module.exports);
