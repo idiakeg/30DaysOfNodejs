@@ -16,7 +16,6 @@ app.use("/api/v1/task", router);
 const start = async () => {
 	try {
 		await connectDB();
-		console.log("Connected to DB!!");
 		app.listen(port, console.log(`Server is running on port: ${port}`));
 	} catch (error) {
 		console.log(error);
