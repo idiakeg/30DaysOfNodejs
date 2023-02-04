@@ -1,3 +1,5 @@
+const Task = require("../models/Task");
+
 const getAllTask = (req, res) => {
 	res.send("Route to get all task");
 };
@@ -6,8 +8,10 @@ const getSingleTask = (req, res) => {
 	res.send("Rpute to get Single task");
 };
 
-const createTask = (req, res) => {
-	res.send("Route to create a new task");
+const createTask = async (req, res) => {
+	// create a new instance of the model
+	const task = await Task.create(req.body);
+	res.status(200).json(task);
 };
 
 const updateTask = (req, res) => {

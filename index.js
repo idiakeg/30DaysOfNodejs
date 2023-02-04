@@ -11,6 +11,8 @@ mongoose.set("strictQuery", false);
 const app = express();
 
 // middleware definitions
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use("/api/v1/task", router);
 
 // connect to the data base
