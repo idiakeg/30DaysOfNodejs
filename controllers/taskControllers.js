@@ -17,6 +17,7 @@ const getSingleTask = async (req, res) => {
 	try {
 		const { id: taskId } = req.params;
 		const task = await Task.findOne({ _id: taskId });
+		// if the taskId(id obtained from the client) doesnot exist on the DB, null is returned. When this happens, inform the user.
 		if (!task) {
 			return res.status(404).json({
 				msg: "No such task exists",
