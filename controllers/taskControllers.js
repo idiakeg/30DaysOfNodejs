@@ -1,11 +1,33 @@
 const Task = require("../models/Task");
 
-const getAllTask = (req, res) => {
-	res.send("Route to get all task");
+const getAllTask = async (req, res) => {
+	try {
+		const task = await Task.find({});
+		res.status(200).json({
+			task: task,
+		});
+	} catch (error) {
+		res.status(500).json({
+			msg: error,
+		});
+	}
 };
 
-const getSingleTask = (req, res) => {
-	res.send("Rpute to get Single task");
+const getSingleTask = async (req, res) => {
+	try {
+		const { id: taskId } = req.params;
+		const task = await Task.findOne({ _id: taskId });
+		if (!task) {
+			return res.status(404).json({
+				msg: "No such task exists",
+			});
+		}
+		res.status(200).json(task);
+	} catch (error) {
+		res.status(500).json({
+			msg: error,
+		});
+	}
 };
 
 const createTask = async (req, res) => {
