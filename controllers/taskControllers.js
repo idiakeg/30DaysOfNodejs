@@ -17,7 +17,6 @@ const getSingleTask = async (req, res) => {
 	try {
 		const { id: taskId } = req.params;
 		const task = await Task.findOne({ _id: taskId });
-		// if the taskId(id obtained from the client) doesnot exist on the DB, null is returned. When this happens, inform the user.
 		if (!task) {
 			return res.status(404).json({
 				msg: "No such task exists",
@@ -46,8 +45,27 @@ const updateTask = (req, res) => {
 	res.send("Route to update created task");
 };
 
-const deleteTask = (req, res) => {
-	res.send("Route to delete task");
+const deleteTask = async (req, res) => {
+	try {
+		const { id: taskId } = req.params;
+		const { acknowledged, deletedCount } = await Task.deleteOne({
+			_id: taskId,
+		});
+		if (deletedCount === 0) {
+			return res.status(404).json({
+				status: "failed",
+				msg: `task with id: ${taskId} doesnot exist`,
+			});
+		}
+		res.status(200).json({
+			status: "success",
+			msg: `task with id: ${taskId} was deleted`,
+		});
+	} catch (error) {
+		res.status(500).json({
+			msg: error,
+		});
+	}
 };
 
 module.exports = {
