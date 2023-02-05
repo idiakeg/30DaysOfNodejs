@@ -9,9 +9,14 @@ const getSingleTask = (req, res) => {
 };
 
 const createTask = async (req, res) => {
-	// create a new instance of the model
-	const task = await Task.create(req.body);
-	res.status(200).json(task);
+	try {
+		const task = await Task.create(req.body);
+		res.status(200).json(task);
+	} catch (error) {
+		res.status(500).json({
+			msg: error,
+		});
+	}
 };
 
 const updateTask = (req, res) => {
