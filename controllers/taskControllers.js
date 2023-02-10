@@ -41,10 +41,6 @@ const createTask = async (req, res) => {
 	}
 };
 
-const updateTask = (req, res) => {
-	res.send("Route to update created task");
-};
-
 const deleteTask = async (req, res) => {
 	try {
 		const { id: taskId } = req.params;
@@ -60,6 +56,25 @@ const deleteTask = async (req, res) => {
 		res.status(200).json({
 			status: "success",
 			msg: `task with id: ${taskId} was deleted`,
+		});
+	} catch (error) {
+		res.status(500).json({
+			msg: error,
+		});
+	}
+};
+
+const updateTask = async (req, res) => {
+	try {
+		// obtain id provided by the user
+		const { id: taskId } = req.params;
+		const providedData = req.body;
+		const task = await Task.findOneAndUpdate({ _id: taskId }, providedData, {
+			new: true,
+			runValidators: true,
+		});
+		res.status(200).json({
+			task,
 		});
 	} catch (error) {
 		res.status(500).json({
