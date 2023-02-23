@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const connectDB = require("./db/connect");
+const router = require("./routes/user");
 require("dotenv").config();
 const port = process.env.PORT_NUMBER;
 const uri = process.env.CONNECTION_STRING;
@@ -12,6 +13,9 @@ const app = express();
 
 // middleware definitions
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/signup", router);
 
 const start = async () => {
 	try {
