@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api/v1/task", router);
 
+app.use((req, res) => res.status(404).send("Route does not exist"));
+
 // connect to the data base
 const start = async () => {
 	try {
