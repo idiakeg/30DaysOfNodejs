@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const port = 5500;
 const router = require("./routes/taskRoute");
+const errorHandler = require("./middlewares/errorHandler.js");
 const connectDB = require("./db/connect");
 require("dotenv").config();
 
@@ -14,8 +15,8 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api/v1/task", router);
-
 app.use((req, res) => res.status(404).send("Route does not exist"));
+app.use(errorHandler);
 
 // connect to the data base
 const start = async () => {
