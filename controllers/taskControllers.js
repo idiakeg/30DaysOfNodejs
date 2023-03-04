@@ -8,10 +8,14 @@ const getAllTask = asyncWrapper(async (req, res) => {
 	});
 });
 
-const getSingleTask = asyncWrapper(async (req, res) => {
+const getSingleTask = asyncWrapper(async (req, res, next) => {
 	const { id: taskId } = req.params;
 	const task = await Task.findOne({ _id: taskId });
 	if (!task) {
+		const error = new Error("Not Found");
+		error.status = 404;
+		return next(error);
+
 		return res.status(404).json({
 			msg: "No such task exists",
 		});
@@ -26,10 +30,11 @@ const createTask = asyncWrapper(async (req, res) => {
 
 const deleteTask = asyncWrapper(async (req, res) => {
 	const { id: taskId } = req.params;
-	const { acknowledged, deletedCount } = await Task.deleteOne({
+	const taskToBeDeleted = await Task.findOneAndDelete({
 		_id: taskId,
 	});
-	if (deletedCount === 0) {
+
+	if (!taskToBeDeleted) {
 		return res.status(404).json({
 			status: "failed",
 			msg: `task with id: ${taskId} doesnot exist`,
@@ -49,6 +54,13 @@ const updateTask = asyncWrapper(async (req, res) => {
 		new: true,
 		runValidators: true,
 	});
+	console.log(task);
+	if (!task) {
+		return res.status(404).json({
+			status: "failed",
+			msg: `task with id: ${taskId} doesnot exist`,
+		});
+	}
 	res.status(200).json({
 		task,
 	});
