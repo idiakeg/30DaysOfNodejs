@@ -1,5 +1,6 @@
 const Task = require("../models/Task");
 const asyncWrapper = require("../middlewares/async");
+const { createCustomError } = require("../errors/customError");
 
 const getAllTask = asyncWrapper(async (req, res) => {
 	const task = await Task.find({});
@@ -12,13 +13,9 @@ const getSingleTask = asyncWrapper(async (req, res, next) => {
 	const { id: taskId } = req.params;
 	const task = await Task.findOne({ _id: taskId });
 	if (!task) {
-		const error = new Error("Not Found");
-		error.status = 404;
-		return next(error);
-
-		return res.status(404).json({
-			msg: "No such task exists",
-		});
+		return next(
+			createCustomError(`Task with id: ${taskId} doesnot exist`, 404)
+		);
 	}
 	res.status(200).json(task);
 });
@@ -28,17 +25,16 @@ const createTask = asyncWrapper(async (req, res) => {
 	res.status(200).json(task);
 });
 
-const deleteTask = asyncWrapper(async (req, res) => {
+const deleteTask = asyncWrapper(async (req, res, next) => {
 	const { id: taskId } = req.params;
 	const taskToBeDeleted = await Task.findOneAndDelete({
 		_id: taskId,
 	});
 
 	if (!taskToBeDeleted) {
-		return res.status(404).json({
-			status: "failed",
-			msg: `task with id: ${taskId} doesnot exist`,
-		});
+		return next(
+			createCustomError(`task with id: ${taskId} doesnot exist`, 404)
+		);
 	}
 	res.status(200).json({
 		status: "success",
@@ -46,7 +42,7 @@ const deleteTask = asyncWrapper(async (req, res) => {
 	});
 });
 
-const updateTask = asyncWrapper(async (req, res) => {
+const updateTask = asyncWrapper(async (req, res, next) => {
 	// obtain id provided by the user
 	const { id: taskId } = req.params;
 	const providedData = req.body;
@@ -54,12 +50,10 @@ const updateTask = asyncWrapper(async (req, res) => {
 		new: true,
 		runValidators: true,
 	});
-	console.log(task);
 	if (!task) {
-		return res.status(404).json({
-			status: "failed",
-			msg: `task with id: ${taskId} doesnot exist`,
-		});
+		return next(
+			createCustomError(`task with id: ${taskId} doesnot exist`, 404)
+		);
 	}
 	res.status(200).json({
 		task,
