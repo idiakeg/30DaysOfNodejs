@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const port = 5500;
+const port = process.env.PORT || 5500;
 const router = require("./routes/taskRoute");
 const errorHandler = require("./middlewares/errorHandler.js");
 const connectDB = require("./db/connect");
