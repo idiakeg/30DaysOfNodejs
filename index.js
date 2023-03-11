@@ -22,7 +22,12 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", (ws) => {
 	console.log("mew client connected");
 	ws.on("message", (data) => {
-		console.log(data);
+		let convertedData = data.toString();
+		wss.clients.forEach((client) => {
+			if (client !== ws && client.readyState === WebSocket.OPEN) {
+				client.send(convertedData);
+			}
+		});
 	});
 	ws.on("close", () => {
 		console.log("client has disconnected");
