@@ -20,7 +20,7 @@ app.get("/admin", (req, res) => {
 const wss = new WebSocket.Server({ server });
 
 wss.on("connection", (ws) => {
-	console.log("mew client connected");
+	console.log("new client connected");
 	ws.on("message", (data) => {
 		let convertedData = data.toString();
 		wss.clients.forEach((client) => {
