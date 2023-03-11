@@ -20,6 +20,25 @@
 			ws.onopen = () => {
 				console.log("New client has connected");
 			};
+
+			const txtArea = document.getElementById("quotes");
+			const btn = document.getElementById("btn");
+			const error = document.querySelector(".error");
+			btn.addEventListener("click", () => {
+				const quote = txtArea.value;
+				if (quote === "") {
+					error.textContent = "Sorry, cannot send empty quote";
+					setTimeout(() => {
+						error.textContent = "";
+					}, 3000);
+					return;
+				} else if (ws.readyState === 1) {
+					ws.send(quote);
+					txtArea.value = "";
+				} else {
+					console.log("cannot send message at this time");
+				}
+			});
 		</script>
 	</body>
 </html>
