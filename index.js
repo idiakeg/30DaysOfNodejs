@@ -12,10 +12,6 @@ const server = http.createServer(app);
 app.use(express.static("static"));
 
 // basic routes
-app.get("/", (req, res) => {
-	res.sendFile(path.join(__dirname, "static/index.html"));
-});
-
 app.get("/admin", (req, res) => {
 	res.sendFile(path.join(__dirname, "static/admin.html"));
 });
