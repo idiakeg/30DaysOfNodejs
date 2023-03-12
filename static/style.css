@@ -21,15 +21,19 @@ body {
 	padding: 0.5rem;
 }
 
-.container p:first-child {
+.container p {
+	margin: 0;
+	text-align: center;
+}
+
+p:nth-of-type(1) {
+	font-size: 1.6rem;
 	padding-bottom: 0.5rem;
 	border-bottom: 1px solid #acacac;
 }
 
-p:nth-of-type(1) {
-	text-align: center;
-	margin: 0;
-	font-size: 1.6rem;
+.error {
+	color: #f34747;
 }
 
 .container textarea {
@@ -49,12 +53,6 @@ p:nth-of-type(1) {
 	border: none;
 	background-color: var(--primary-color);
 	color: white;
-}
-
-.error {
-	text-align: center;
-	color: #f34747;
-	margin: 0;
 }
 
 ul {
