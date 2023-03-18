@@ -1,0 +1,77 @@
+:root {
+	--primary-color: #f3f3f3;
+	--color-others: #5fe0b8;
+	--color-self: #67c8e9;
+	--secondary-color: #444444;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: var(--primary-color);
+	font-size: 1.5rem;
+}
+
+.container {
+	border: 2px solid var(--secondary-color);
+	border-radius: 5px;
+	margin: 6rem auto;
+	max-width: 60rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem;
+	height: 80vh;
+}
+
+/* message container */
+.message_container > * {
+	margin: 0;
+}
+
+.message_container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	flex-basis: 90%;
+	overflow-y: auto;
+	padding: 0.5rem;
+	border-bottom: 1px solid var(--secondary-color);
+}
+
+.message_container p {
+	padding: 1rem;
+	border-radius: 0 10px 10px 10px;
+	background-color: var(--color-others);
+	padding: 1rem;
+	width: fit-content;
+}
+
+.message_container p.self {
+	align-self: flex-end;
+	border-radius: 10px 0 10px 10px;
+	background-color: var(--color-self);
+}
+
+/* input container */
+.input_container {
+	display: flex;
+	justify-content: space-between;
+	gap: 5%;
+}
+
+.input_container input {
+	width: 85%;
+	padding: 0.7rem;
+}
+
+.input_container button {
+	cursor: pointer;
+	font-size: 1.53rem;
+}
